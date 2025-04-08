@@ -1,0 +1,64 @@
+{
+  "title": "Weekend in Paris",
+  "location": "Paris, France",
+  "startDate": "2024-05-10",
+  "endDate": "2024-05-12",
+  "events": [
+    {
+      "id": "1",
+      "title": "Arrival at Charles de Gaulle Airport",
+      "startTime": "2024-05-10T14:00:00",
+      "endTime": "2024-05-10T15:00:00",
+      "location": "Charles de Gaulle Airport",
+      "notes": "Pick up luggage and take taxi to hotel"
+    },
+    {
+      "id": "2",
+      "title": "Check-in at Hotel",
+      "startTime": "2024-05-10T16:00:00",
+      "endTime": "2024-05-10T17:00:00",
+      "location": "Hotel Le Parisien",
+      "notes": "Confirm room with Eiffel Tower view"
+    },
+    {
+      "id": "3",
+      "title": "Dinner at Le Jules Verne",
+      "startTime": "2024-05-10T19:00:00",
+      "endTime": "2024-05-10T21:00:00",
+      "location": "Eiffel Tower, 2nd Floor",
+      "notes": "Reservation under Smith, dress code: smart casual"
+    },
+    {
+      "id": "4",
+      "title": "Louvre Museum Visit",
+      "startTime": "2024-05-11T10:00:00",
+      "endTime": "2024-05-11T14:00:00",
+      "location": "Louvre Museum",
+      "notes": "Skip-the-line tickets purchased, meet at Pyramid entrance"
+    },
+    {
+      "id": "5",
+      "title": "Seine River Cruise",
+      "startTime": "2024-05-11T16:00:00",
+      "endTime": "2024-05-11T18:00:00",
+      "location": "Bateaux Parisiens",
+      "notes": "Sunset cruise with dinner option"
+    },
+    {
+      "id": "6",
+      "title": "Montmartre Walking Tour",
+      "startTime": "2024-05-12T09:00:00",
+      "endTime": "2024-05-12T12:00:00",
+      "location": "Montmartre",
+      "notes": "Meet at Place du Tertre, wear comfortable shoes"
+    },
+    {
+      "id": "7",
+      "title": "Departure",
+      "startTime": "2024-05-12T16:00:00",
+      "endTime": "2024-05-12T17:00:00",
+      "location": "Charles de Gaulle Airport",
+      "notes": "Check-in for flight home"
+    }
+  ]
+} 
