@@ -19,10 +19,10 @@ export function useTimelineView(props, emit) {
   // Number of days to show based on expanded state
   const DAYS_TO_SHOW = computed(() => (props.isExpanded ? 7 : 4))
 
-  // Generate hours from 6am to 10pm
+  // Generate hours from 1am to 11pm
   const hours = computed(() => {
     const hours = []
-    for (let i = 6; i <= 22; i++) {
+    for (let i = 1; i <= 23; i++) {
       hours.push(i)
     }
     return hours
@@ -166,13 +166,13 @@ export function useTimelineView(props, emit) {
     const start = new Date(activity.startTime)
     const end = new Date(activity.endTime)
 
-    // Calculate position from 6am (0) to 10pm (16 hours)
+    // Calculate position from 1am (0) to 11pm (22 hours)
     const startHour = start.getHours()
     const startMinute = start.getMinutes()
     const endHour = end.getHours()
     const endMinute = end.getMinutes()
 
-    const startPosition = ((startHour - 6) * 60 + startMinute) / 60
+    const startPosition = ((startHour - 1) * 60 + startMinute) / 60
     const duration =
       ((endHour - startHour) * 60 + (endMinute - startMinute)) / 60
 
@@ -283,7 +283,7 @@ export function useTimelineView(props, emit) {
 
         // Convert to hours (assuming 60px per hour)
         const hours = relativeY / 60
-        const hourValue = Math.max(6, Math.min(22, Math.floor(hours) + 6))
+        const hourValue = Math.max(1, Math.min(23, Math.floor(hours) + 1))
         const minutes = Math.round((hours % 1) * 60)
         const snappedMinutes =
           Math.round(minutes / TIME_INTERVAL) * TIME_INTERVAL
@@ -309,7 +309,7 @@ export function useTimelineView(props, emit) {
       const startMinute = Math.round((hour % 1) * 60)
 
       // Calculate the position and height
-      const startPosition = ((startHour - 6) * 60 + startMinute) / 60
+      const startPosition = ((startHour - 1) * 60 + startMinute) / 60
       dragPreviewPosition.value = {
         top: startPosition * 60,
         height: durationHours * 60,

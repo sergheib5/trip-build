@@ -1,7 +1,7 @@
 <template>
   <div class="trip-container">
     <h1>Trip Details</h1>
-    <p>Trip ID: {{ $route.params.id }}</p>
+    <p>Trip ID: {{ route.params.id }}</p>
   </div>
 </template>
 

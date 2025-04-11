@@ -126,6 +126,8 @@
   display: flex;
   overflow: auto;
   width: 100%;
+  height: calc(100vh - 120px); /* Adjust this value based on your header height */
+  max-height: 800px; /* Set a maximum height */
 }
 
 .time-labels {
@@ -133,6 +135,10 @@
   flex-shrink: 0;
   padding: 8px 0;
   border-right: 1px solid #e0e0e0;
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 2;
 }
 
 .time-label {
