@@ -15,6 +15,15 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   user-select: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 600px;
 }
 
 .calendar-header {
@@ -23,6 +32,10 @@
   justify-content: space-between;
   padding: 16px;
   border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 3;
 }
 
 .month-year {
@@ -81,7 +94,10 @@
 .day-headers {
   display: flex;
   border-bottom: 1px solid #e0e0e0;
-  position: relative;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 3;
   height: 60px;
 }
 
@@ -124,10 +140,8 @@
 .time-grid {
   flex: 1;
   display: flex;
-  overflow: auto;
   width: 100%;
-  height: calc(100vh - 120px); /* Adjust this value based on your header height */
-  max-height: 800px; /* Set a maximum height */
+  position: relative;
 }
 
 .time-labels {
