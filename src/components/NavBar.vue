@@ -38,4 +38,4 @@
 
 <script setup>
 // No additional imports needed
-</script> 
+</script>
