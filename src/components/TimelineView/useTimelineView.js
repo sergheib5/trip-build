@@ -28,6 +28,11 @@ export function useTimelineView(props, emit) {
     return hours
   })
 
+  // Default scroll position to 8 AM (7 hours from start)
+  const defaultScrollPosition = computed(() => {
+    return 7 * 60 // 7 hours * 60px per hour
+  })
+
   // Get visible days
   const visibleDays = computed(() => {
     const days = []
@@ -742,5 +747,6 @@ export function useTimelineView(props, emit) {
     dragOverDay,
     dragOverHour,
     dragPreviewPosition,
+    defaultScrollPosition,
   }
 }

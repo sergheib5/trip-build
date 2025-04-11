@@ -1,6 +1,6 @@
 <template>
   <div class="timeline-container">
-    <div class="calendar-view">
+    <div class="calendar-view" ref="calendarView">
       <!-- Calendar grid -->
       <div class="calendar-grid" :class="{ 'expanded-view': isExpanded }">
         <!-- Day headers -->
@@ -23,7 +23,7 @@
         </div>
 
         <!-- Time grid -->
-        <div class="time-grid">
+        <div class="time-grid" ref="timeGrid">
           <div class="time-labels">
             <div v-for="hour in hours" :key="hour" class="time-label">
               {{ formatHour(hour) }}
@@ -128,6 +128,7 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useTimelineView } from './useTimelineView'
 
 const props = defineProps({
@@ -151,7 +152,9 @@ const props = defineProps({
 
 const emit = defineEmits(['update:activities'])
 
-// Use the composition API
+const calendarView = ref(null)
+const timeGrid = ref(null)
+
 const {
   visibleDays,
   hours,
@@ -175,7 +178,14 @@ const {
   dragOverDay,
   dragOverHour,
   dragPreviewPosition,
+  defaultScrollPosition,
 } = useTimelineView(props, emit)
+
+onMounted(() => {
+  if (calendarView.value) {
+    calendarView.value.scrollTop = defaultScrollPosition.value
+  }
+})
 </script>
 
 <style scoped>
