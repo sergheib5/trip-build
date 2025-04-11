@@ -14,7 +14,8 @@
             v-for="day in visibleDays"
             :key="day.date"
             class="day-header"
-            :class="{ 'current-day': isCurrentDay(day.date) }">
+            :class="{ 'current-day': isCurrentDay(day.date) }"
+          >
             <div class="day-name">{{ day.dayName }}</div>
             <div class="day-number">{{ day.dayNumber }}</div>
           </div>
@@ -41,67 +42,81 @@
               }"
               @dragover.prevent="onDragOver($event, day.date)"
               @drop.prevent="onDrop($event, day.date)"
-              @dragleave="onDragLeave($event)">
+              @dragleave="onDragLeave($event)"
+            >
               <div class="time-slots">
                 <div
                   v-for="hour in hours"
                   :key="hour"
                   class="time-slot"
                   :class="{
-                    'drag-over': isDraggingOver &&
+                    'drag-over':
+                      isDraggingOver &&
                       dragOverDay === day.date.toDateString() &&
-                      Math.floor(dragOverHour) === hour
+                      Math.floor(dragOverHour) === hour,
                   }"
                   @dragover.prevent="onDragOver($event, day.date, hour)"
                   @drop.prevent="onDrop($event, day.date, hour)"
-                  @dragleave="onDragLeave($event)"></div>
+                  @dragleave="onDragLeave($event)"
+                ></div>
               </div>
 
               <!-- Add drag preview overlay -->
-              <div 
-                v-if="dragPreviewPosition.visible &&
-                  dragPreviewPosition.day === day.date.toDateString()" 
-                class="drag-preview" 
+              <div
+                v-if="
+                  dragPreviewPosition.visible &&
+                  dragPreviewPosition.day === day.date.toDateString()
+                "
+                class="drag-preview"
                 :style="{
                   top: dragPreviewPosition.top + 'px',
                   height: dragPreviewPosition.height + 'px',
-                }"></div>
+                }"
+              ></div>
 
               <!-- Activities for this day -->
               <div class="activities">
-                <div 
-                  v-for="activity in getActivitiesForDay(day.date)" 
-                  :key="activity.id" 
+                <div
+                  v-for="activity in getActivitiesForDay(day.date)"
+                  :key="activity.id"
                   class="activity-block"
-                  :style="getActivityStyle(activity)" 
-                  @click.stop="editActivity(activity)" 
+                  :style="getActivityStyle(activity)"
+                  @click.stop="editActivity(activity)"
                   draggable="true"
                   @mousedown.stop="onActivityMouseDown($event, activity)"
-                  @dragstart="onActivityDragStart($event, activity)" 
-                  @dragend="onDragEnd">
+                  @dragstart="onActivityDragStart($event, activity)"
+                  @dragend="onDragEnd"
+                >
                   <div class="activity-content">
                     <div class="activity-header">
                       <h4 :title="activity.title">{{ activity.title }}</h4>
-                      <button 
-                        class="delete-button" 
-                        @click.stop="deleteActivity(activity)">
+                      <button
+                        class="delete-button"
+                        @click.stop="deleteActivity(activity)"
+                      >
                         ×
                       </button>
                     </div>
-                    <p 
-                      class="time" 
-                      :title="formatTimeRange(activity.startTime, activity.endTime)">
-                      {{ formatTimeRange(activity.startTime, activity.endTime) }}
+                    <p
+                      class="time"
+                      :title="
+                        formatTimeRange(activity.startTime, activity.endTime)
+                      "
+                    >
+                      {{
+                        formatTimeRange(activity.startTime, activity.endTime)
+                      }}
                     </p>
                     <p class="location" :title="activity.location">
                       {{ activity.location }}
                     </p>
                   </div>
                   <!-- Add resize handle -->
-                  <div 
-                    class="resize-handle" 
+                  <div
+                    class="resize-handle"
                     @mousedown.stop="startResize($event, activity)"
-                    @touchstart.stop="startResize($event, activity)"></div>
+                    @touchstart.stop="startResize($event, activity)"
+                  ></div>
                 </div>
               </div>
             </div>
@@ -131,7 +146,7 @@ const props = defineProps({
   endDate: {
     type: Date,
     default: null,
-  }
+  },
 })
 
 const emit = defineEmits(['update:activities'])
@@ -159,6 +174,10 @@ const {
   isDraggingOver,
   dragOverDay,
   dragOverHour,
-  dragPreviewPosition
+  dragPreviewPosition,
 } = useTimelineView(props, emit)
-</script> 
+</script>
+
+<style scoped>
+@import './TimelineView.css';
+</style>

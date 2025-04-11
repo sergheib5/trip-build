@@ -167,7 +167,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import TimelineView from '@/components/TimelineView.vue'
+import TimelineView from '@/components/TimelineView/TimelineViewNeq.vue'
 import ActivitySidebar from '@/components/ActivitySidebar.vue'
 
 const isCalendarExpanded = ref(false)
