@@ -10,7 +10,7 @@ import NavBar from './components/NavBar.vue'
 </script>
 
 <style>
-@import './assets/main.css';
+@import './assets/styles/main.css';
 body {
   margin: 0;
   padding: 0;

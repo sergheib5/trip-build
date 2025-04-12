@@ -58,10 +58,10 @@
                       </div>
                     </div>
                     <div class="date-picker-actions">
-                      <button @click="cancelDateSelection" class="cancel-btn">
+                      <button class="cancel-btn" @click="cancelDateSelection">
                         Cancel
                       </button>
-                      <button @click="applyDateSelection" class="apply-btn">
+                      <button class="apply-btn" @click="applyDateSelection">
                         Apply
                       </button>
                     </div>
@@ -167,7 +167,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import TimelineView from '@/components/TimelineView/TimelineViewNeq.vue'
+import TimelineView from '@/components/TimelineView/TimelineView.vue'
 import ActivitySidebar from '@/components/ActivitySidebar.vue'
 
 const isCalendarExpanded = ref(false)
@@ -510,59 +510,6 @@ const shouldShowSidebar = computed(
   background-color: #f3f4f6;
 }
 
-.calendar-grid-picker {
-  padding: 0.75rem;
-}
-
-.weekday-headers {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.weekday-header {
-  text-align: center;
-  font-size: 0.75rem;
-  color: #6b7280;
-}
-
-.calendar-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.25rem;
-}
-
-.calendar-day {
-  text-align: center;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.calendar-day:hover {
-  background-color: #f3f4f6;
-}
-
-.calendar-day.outside-month {
-  color: #9ca3af;
-}
-
-.calendar-day.selected-start,
-.calendar-day.selected-end {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.calendar-day.in-range {
-  background-color: #dbeafe;
-}
-
-.calendar-day.today {
-  border: 1px solid #3b82f6;
-}
-
 .date-picker-actions {
   display: flex;
   justify-content: flex-end;
@@ -597,5 +544,64 @@ const shouldShowSidebar = computed(
 
 .apply-btn:hover {
   background-color: #2563eb;
+}
+
+.calendar-grid-picker {
+  padding: 0.75rem;
+}
+
+.weekday-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.weekday-header {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.calendar-day:hover {
+  background-color: #f3f4f6;
+}
+
+.calendar-day.outside-month {
+  color: #9ca3af;
+}
+
+.calendar-day.today {
+  background-color: #e5e7eb;
+  font-weight: 500;
+}
+
+.calendar-day.selected-start,
+.calendar-day.selected-end {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.calendar-day.in-range {
+  background-color: #dbeafe;
+  color: #1e40af;
 }
 </style>
