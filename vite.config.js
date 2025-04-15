@@ -6,14 +6,14 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
-    }
+      '@': path.resolve(__dirname, './src'),
+    },
   },
   build: {
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, 'index.html')
-      }
-    }
-  }
-}) 
+        main: path.resolve(__dirname, 'index.html'),
+      },
+    },
+  },
+})

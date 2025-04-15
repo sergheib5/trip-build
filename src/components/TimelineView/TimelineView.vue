@@ -1,6 +1,6 @@
 <template>
   <div class="timeline-container">
-    <div class="calendar-view" ref="calendarView">
+    <div ref="calendarView" class="calendar-view">
       <!-- Calendar grid -->
       <div class="calendar-grid" :class="{ 'expanded-view': isExpanded }">
         <!-- Day headers -->
@@ -23,7 +23,7 @@
         </div>
 
         <!-- Time grid -->
-        <div class="time-grid" ref="timeGrid">
+        <div ref="timeGrid" class="time-grid">
           <div class="time-labels">
             <div v-for="hour in hours" :key="hour" class="time-label">
               {{ formatHour(hour) }}
@@ -81,8 +81,8 @@
                   :key="activity.id"
                   class="activity-block"
                   :style="getActivityStyle(activity)"
-                  @click.stop="editActivity(activity)"
                   draggable="true"
+                  @click.stop="editActivity(activity)"
                   @mousedown.stop="onActivityMouseDown($event, activity)"
                   @dragstart="onActivityDragStart($event, activity)"
                   @dragend="onDragEnd"

@@ -19,6 +19,7 @@
               Home
             </router-link>
             <router-link
+              v-if="storeAuth.user.id"
               to="/itinerary"
               class="px-3 py-2 rounded-md text-sm font-medium"
               :class="[
@@ -31,11 +32,40 @@
             </router-link>
           </div>
         </div>
+
+        <!-- User Authentication Section -->
+        <div class="flex items-center space-x-4">
+          <template v-if="storeAuth.user.id">
+            <span class="text-gray-300 text-sm">
+              {{ storeAuth.user.email }}
+            </span>
+            <button
+              class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+              @click="handleLogout"
+            >
+              Logout
+            </button>
+          </template>
+          <template v-else>
+            <router-link
+              to="/auth"
+              class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >
+              Login / Register
+            </router-link>
+          </template>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-// No additional imports needed
+import { useStoreAuth } from '@/stores/storeAuth'
+
+const storeAuth = useStoreAuth()
+
+const handleLogout = () => {
+  storeAuth.logoutUser()
+}
 </script>

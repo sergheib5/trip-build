@@ -71,9 +71,9 @@
               <div class="flex items-center space-x-2">
                 <button
                   v-if="isCalendarExpanded"
-                  @click="toggleSidebar"
                   class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
                   title="Toggle Sidebar"
+                  @click="toggleSidebar"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -151,13 +151,13 @@
         <transition name="slide">
           <ActivitySidebar
             v-if="shouldShowSidebar"
-            @place-selected="handlePlaceSelected"
-            @search="handleSearch"
-            @place-drag="handlePlaceDrag"
             class="transition-all duration-300"
             :class="{
               'sidebar-expanded': isCalendarExpanded && isSidebarVisible,
             }"
+            @place-selected="handlePlaceSelected"
+            @search="handleSearch"
+            @place-drag="handlePlaceDrag"
           />
         </transition>
       </div>

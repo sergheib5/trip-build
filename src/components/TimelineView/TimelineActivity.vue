@@ -2,8 +2,8 @@
   <div
     class="activity-block"
     :style="style"
-    @click.stop="$emit('edit', activity)"
     draggable="true"
+    @click.stop="$emit('edit', activity)"
     @mousedown.stop="$emit('mousedown', $event)"
     @dragstart="$emit('dragstart', $event)"
     @dragend="$emit('dragend')"
