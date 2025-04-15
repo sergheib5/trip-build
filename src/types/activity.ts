@@ -5,4 +5,4 @@ export type Activity = {
   endTime: string
   location: string
   notes?: string
-} 
+}

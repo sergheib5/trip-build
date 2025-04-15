@@ -1,12 +1,18 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <NavBar />
     <router-view />
   </div>
 </template>
 
 <script setup>
-import NavBar from './components/NavBar.vue'
+import { useStoreAuth } from '@/stores/storeAuth'
+import { onMounted } from 'vue'
+
+const storeAuth = useStoreAuth()
+
+onMounted(() => {
+  storeAuth.init()
+})
 </script>
 
 <style>

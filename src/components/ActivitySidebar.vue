@@ -4,8 +4,8 @@
   >
     <div class="search-container mb-6">
       <input
-        type="text"
         v-model="searchQuery"
+        type="text"
         placeholder="Search"
         class="w-full p-3 bg-gray-100 rounded-md"
         @input="searchActivities"
@@ -17,8 +17,8 @@
         v-for="place in popularPlaces"
         :key="place.id"
         class="place-card bg-gray-100 rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-200 transition-colors"
-        @click="handlePlaceClick(place)"
         draggable="true"
+        @click="handlePlaceClick(place)"
         @dragstart="onDragStart($event, place)"
       >
         <h4 class="font-medium mb-2">{{ place.name }}</h4>
