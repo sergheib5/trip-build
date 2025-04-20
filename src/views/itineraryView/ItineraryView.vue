@@ -15,7 +15,63 @@
           <div class="px-4 py-5 sm:p-6">
             <div class="flex justify-between items-center mb-6">
               <div class="flex items-center space-x-4">
-                <h2 class="text-3xl font-bold text-gray-900">New York</h2>
+                <div class="relative">
+                  <input
+                    type="text"
+                    v-model="destination"
+                    placeholder="Where to?"
+                    class="w-64 px-4 py-2 text-xl font-bold text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    @focus="showSearchResults = true"
+                  />
+                  <div
+                    v-if="destination"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2"
+                  >
+                    <button
+                      @click="clearDestination"
+                      class="text-gray-400 hover:text-gray-600"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <!-- Search Results Dropdown -->
+                  <div
+                    v-if="showSearchResults && filteredDestinations.length > 0"
+                    class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-96 overflow-y-auto"
+                  >
+                    <div
+                      v-for="dest in filteredDestinations"
+                      :key="dest.id"
+                      class="p-3 hover:bg-gray-100 cursor-pointer flex items-center space-x-3"
+                      @click="selectDestination(dest)"
+                    >
+                      <img
+                        :src="dest.image"
+                        :alt="dest.name"
+                        class="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div>
+                        <div class="font-medium text-gray-900">
+                          {{ dest.name }}
+                        </div>
+                        <div class="text-sm text-gray-500">
+                          {{ dest.country }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="date-range-picker">
                   <div class="date-range-display" @click="toggleDatePicker">
                     <span>{{ formatDateRange }}</span>
@@ -170,9 +226,11 @@ import { ref, computed } from 'vue'
 import TimelineView from '@/components/TimelineView/TimelineView.vue'
 import ActivitySidebar from '@/components/ActivitySidebar.vue'
 
+const destination = ref('')
 const isCalendarExpanded = ref(false)
 const isSidebarVisible = ref(false)
 const isDatePickerOpen = ref(false)
+const showSearchResults = ref(false)
 const displayDate = ref(new Date())
 const startDate = ref(new Date())
 const endDate = ref(null)
@@ -236,6 +294,31 @@ const activities = ref([
     location: '5th Avenue, Midtown Manhattan',
   },
 ])
+
+// Mock destinations data
+const mockDestinations = [
+  { id: 1, name: 'New York', country: 'USA', image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9' },
+  { id: 2, name: 'Paris', country: 'France', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34' },
+  { id: 3, name: 'Tokyo', country: 'Japan', image: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989' },
+  { id: 4, name: 'London', country: 'UK', image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad' },
+  { id: 5, name: 'Rome', country: 'Italy', image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5' },
+  { id: 6, name: 'Barcelona', country: 'Spain', image: 'https://images.unsplash.com/photo-1583422409516-289eea28e2f1' },
+  { id: 7, name: 'Dubai', country: 'UAE', image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c' },
+  { id: 8, name: 'Sydney', country: 'Australia', image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9' },
+  { id: 9, name: 'Rio de Janeiro', country: 'Brazil', image: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325' },
+  { id: 10, name: 'Cape Town', country: 'South Africa', image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5' }
+]
+
+// Computed property for filtered destinations
+const filteredDestinations = computed(() => {
+  if (!destination.value) return []
+  const searchTerm = destination.value.toLowerCase()
+  return mockDestinations.filter(
+    dest =>
+      dest.name.toLowerCase().includes(searchTerm) ||
+      dest.country.toLowerCase().includes(searchTerm)
+  )
+})
 
 const toggleCalendarExpand = () => {
   isCalendarExpanded.value = !isCalendarExpanded.value
@@ -430,6 +513,16 @@ const shouldShowSidebar = computed(
     !isCalendarExpanded.value ||
     (isCalendarExpanded.value && isSidebarVisible.value)
 )
+
+const clearDestination = () => {
+  destination.value = ''
+  showSearchResults.value = false
+}
+
+const selectDestination = dest => {
+  destination.value = dest.name
+  showSearchResults.value = false
+}
 </script>
 
 <style scoped>
