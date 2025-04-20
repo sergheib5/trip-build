@@ -182,7 +182,7 @@ const validatePassword = password => {
 /*
   submit
 */
-const onSubmit = () => {
+const onSubmit = async () => {
   const isEmailValid = validateEmail(credentials.email)
   const isPasswordValid = register.value
     ? validatePassword(credentials.password)
@@ -193,9 +193,15 @@ const onSubmit = () => {
   }
 
   if (register.value) {
-    storeAuth.registerUser(credentials)
+    const result = await storeAuth.registerUser(credentials)
+    if (!result.success) {
+      errors.email = result.error
+    }
   } else {
-    storeAuth.loginUser(credentials)
+    const result = await storeAuth.loginUser(credentials)
+    if (!result.success) {
+      errors.email = result.error
+    }
   }
 }
 </script>

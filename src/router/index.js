@@ -26,9 +26,15 @@ const router = createRouter({
   ],
 })
 
-// navigation guards
-router.beforeEach(async (to, from) => {
+// Enhanced navigation guards
+router.beforeEach(async (to) => {
   const storeAuth = useStoreAuth()
+  
+  // Wait for auth initialization if not already done
+  if (!storeAuth.isInitialized) {
+    await storeAuth.init()
+  }
+
   if (!storeAuth.user.id && to.name !== 'auth') {
     return { name: 'auth' }
   }

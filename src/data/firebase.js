@@ -1,19 +1,25 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
+import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAKRNuO-mpLBw4s9ZD66_4V1oXuaLWYqMA',
-  authDomain: 'trip-build.firebaseapp.com',
-  projectId: 'trip-build',
-  storageBucket: 'trip-build.firebasestorage.app',
-  messagingSenderId: '433858902496',
-  appId: '1:433858902496:web:9ee72b1edea3a359cc5385',
-  measurementId: 'G-K9RXF5Y240',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 }
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const auth = getAuth(app)
+
+// Add persistence configuration
+setPersistence(auth, browserLocalPersistence)
+  .catch((error) => {
+    console.error('Auth persistence error:', error)
+  })
 
 export { db, auth }
