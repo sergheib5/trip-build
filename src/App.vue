@@ -1,11 +1,11 @@
 <template>
-  <div class="min-h-screen bg-gray-50" v-if="isReady">
+  <div v-if="isReady" class="min-h-screen bg-gray-50">
     <router-view />
   </div>
   <div v-else class="min-h-screen bg-gray-50 flex items-center justify-center">
-    <ArrowPathIcon 
-      class="h-12 w-12 text-blue-500 animate-spin" 
-      aria-hidden="true" 
+    <ArrowPathIcon
+      class="h-12 w-12 text-blue-500 animate-spin"
+      aria-hidden="true"
     />
   </div>
 </template>
@@ -37,28 +37,32 @@ onMounted(async () => {
   position: relative;
 }
 
-.double-bounce1, .double-bounce2 {
+.double-bounce1,
+.double-bounce2 {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-color: #3B82F6;  /* Tailwind blue-500 */
+  background-color: hsl(217, 91%, 60%);
+  /* Tailwind blue-500 */
   opacity: 0.6;
   position: absolute;
   top: 0;
   left: 0;
-  animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
 }
 
 .double-bounce2 {
-  animation-delay: -1.0s;
+  animation-delay: -1s;
 }
 
 @keyframes sk-bounce {
-  0%, 100% { 
-    transform: scale(0.0);
-  } 
-  50% { 
-    transform: scale(1.0);
+  0%,
+  100% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
   }
 }
 </style>

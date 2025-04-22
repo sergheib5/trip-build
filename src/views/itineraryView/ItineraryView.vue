@@ -22,6 +22,8 @@
                     placeholder="Where to?"
                     class="w-64 px-4 py-2 text-xl font-bold text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                     @focus="showSearchResults = true"
+                    @input="handleSearchInput"
+                    aria-label="Search destination"
                   />
                   <div
                     v-if="destination"
@@ -29,7 +31,8 @@
                   >
                     <button
                       @click="clearDestination"
-                      class="text-gray-400 hover:text-gray-600"
+                      class="text-gray-600 hover:text-gray-800"
+                      aria-label="Clear destination search"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -47,9 +50,47 @@
                   </div>
                   <!-- Search Results Dropdown -->
                   <div
-                    v-if="showSearchResults && filteredDestinations.length > 0"
+                    v-if="
+                      showSearchResults &&
+                      (filteredDestinations.length > 0 ||
+                        recentSearches.length > 0)
+                    "
                     class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-96 overflow-y-auto"
                   >
+                    <!-- Recent Searches -->
+                    <div
+                      v-if="recentSearches.length > 0"
+                      class="border-b border-gray-200"
+                    >
+                      <div class="px-3 py-2 text-xs font-medium text-gray-500">
+                        Recent Searches
+                      </div>
+                      <div
+                        v-for="search in recentSearches"
+                        :key="search"
+                        class="p-3 hover:bg-gray-100 cursor-pointer"
+                        @click="selectRecentSearch(search)"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4 text-gray-400"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          <span class="text-gray-900">{{ search }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Destination Results -->
                     <div
                       v-for="dest in filteredDestinations"
                       :key="dest.id"
@@ -74,14 +115,20 @@
                 </div>
                 <div class="date-range-picker">
                   <div class="date-range-display" @click="toggleDatePicker">
-                    <span>{{ formatDateRange }}</span>
+                    <span class="px-4 py-2 text-base text-gray-900">
+                      {{ formatDateRange }}
+                    </span>
                   </div>
                   <!-- Date Picker Popup -->
                   <div v-if="isDatePickerOpen" class="date-picker-popup">
                     <div class="date-picker-header">
-                      <button @click="prevMonth">&lt;</button>
+                      <button @click="prevMonth" aria-label="Previous month">
+                        &lt;
+                      </button>
                       <span>{{ displayedMonthYear }}</span>
-                      <button @click="nextMonth">&gt;</button>
+                      <button @click="nextMonth" aria-label="Next month">
+                        &gt;
+                      </button>
                     </div>
                     <div class="calendar-grid-picker">
                       <!-- Day names -->
@@ -114,47 +161,40 @@
                       </div>
                     </div>
                     <div class="date-picker-actions">
-                      <button class="cancel-btn" @click="cancelDateSelection">
+                      <button
+                        class="cancel-btn"
+                        @click="cancelDateSelection"
+                        aria-label="Cancel date selection"
+                      >
                         Cancel
                       </button>
-                      <button class="apply-btn" @click="applyDateSelection">
+                      <button
+                        class="apply-btn"
+                        @click="applyDateSelection"
+                        aria-label="Apply date selection"
+                      >
                         Apply
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="flex items-center space-x-2">
+              <!-- Toolbar -->
+              <div
+                class="flex items-center space-x-2 bg-white rounded-lg shadow-sm p-1"
+              >
                 <button
-                  v-if="isCalendarExpanded"
-                  class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
-                  title="Toggle Sidebar"
-                  @click="toggleSidebar"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M4 6h16M4 12h16M4 18h7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                  class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   :title="isCalendarExpanded ? 'Collapse View' : 'Expand View'"
                   @click="toggleCalendarExpand"
+                  :aria-label="
+                    isCalendarExpanded ? 'Collapse View' : 'Expand View'
+                  "
                 >
                   <svg
                     v-if="isCalendarExpanded"
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
+                    class="h-5 w-5 text-gray-600"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -169,7 +209,7 @@
                   <svg
                     v-else
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
+                    class="h-5 w-5 text-gray-600"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -179,6 +219,27 @@
                       stroke-linejoin="round"
                       stroke-width="2"
                       d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"
+                    />
+                  </svg>
+                </button>
+                <button
+                  class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  title="Export to Calendar"
+                  @click="exportToCalendar"
+                  aria-label="Export itinerary to calendar"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                     />
                   </svg>
                 </button>
@@ -222,9 +283,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import TimelineView from '@/components/TimelineView/TimelineView.vue'
 import ActivitySidebar from '@/components/ActivitySidebar.vue'
+import { generateICalendar, downloadICalendar } from '@/utils/calendarExport'
 
 const destination = ref('')
 const isCalendarExpanded = ref(false)
@@ -236,6 +298,8 @@ const startDate = ref(new Date())
 const endDate = ref(null)
 const tempStartDate = ref(null)
 const tempEndDate = ref(null)
+const recentSearches = ref([])
+const MAX_RECENT_SEARCHES = 5
 const activities = ref([
   {
     id: '1',
@@ -297,16 +361,66 @@ const activities = ref([
 
 // Mock destinations data
 const mockDestinations = [
-  { id: 1, name: 'New York', country: 'USA', image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9' },
-  { id: 2, name: 'Paris', country: 'France', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34' },
-  { id: 3, name: 'Tokyo', country: 'Japan', image: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989' },
-  { id: 4, name: 'London', country: 'UK', image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad' },
-  { id: 5, name: 'Rome', country: 'Italy', image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5' },
-  { id: 6, name: 'Barcelona', country: 'Spain', image: 'https://images.unsplash.com/photo-1583422409516-289eea28e2f1' },
-  { id: 7, name: 'Dubai', country: 'UAE', image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c' },
-  { id: 8, name: 'Sydney', country: 'Australia', image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9' },
-  { id: 9, name: 'Rio de Janeiro', country: 'Brazil', image: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325' },
-  { id: 10, name: 'Cape Town', country: 'South Africa', image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5' }
+  {
+    id: 1,
+    name: 'New York',
+    country: 'USA',
+    image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9',
+  },
+  {
+    id: 2,
+    name: 'Paris',
+    country: 'France',
+    image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34',
+  },
+  {
+    id: 3,
+    name: 'Tokyo',
+    country: 'Japan',
+    image: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989',
+  },
+  {
+    id: 4,
+    name: 'London',
+    country: 'UK',
+    image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad',
+  },
+  {
+    id: 5,
+    name: 'Rome',
+    country: 'Italy',
+    image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5',
+  },
+  {
+    id: 6,
+    name: 'Barcelona',
+    country: 'Spain',
+    image: 'https://images.unsplash.com/photo-1583422409516-289eea28e2f1',
+  },
+  {
+    id: 7,
+    name: 'Dubai',
+    country: 'UAE',
+    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c',
+  },
+  {
+    id: 8,
+    name: 'Sydney',
+    country: 'Australia',
+    image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9',
+  },
+  {
+    id: 9,
+    name: 'Rio de Janeiro',
+    country: 'Brazil',
+    image: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325',
+  },
+  {
+    id: 10,
+    name: 'Cape Town',
+    country: 'South Africa',
+    image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5',
+  },
 ]
 
 // Computed property for filtered destinations
@@ -319,6 +433,19 @@ const filteredDestinations = computed(() => {
       dest.country.toLowerCase().includes(searchTerm)
   )
 })
+
+// Load recent searches from localStorage on component mount
+onMounted(() => {
+  const savedSearches = localStorage.getItem('recentSearches')
+  if (savedSearches) {
+    recentSearches.value = JSON.parse(savedSearches)
+  }
+})
+
+// Save recent searches to localStorage
+const saveRecentSearches = () => {
+  localStorage.setItem('recentSearches', JSON.stringify(recentSearches.value))
+}
 
 const toggleCalendarExpand = () => {
   isCalendarExpanded.value = !isCalendarExpanded.value
@@ -522,6 +649,30 @@ const clearDestination = () => {
 const selectDestination = dest => {
   destination.value = dest.name
   showSearchResults.value = false
+
+  // Add to recent searches if not already present
+  if (!recentSearches.value.includes(dest.name)) {
+    recentSearches.value.unshift(dest.name)
+    // Keep only the most recent searches
+    if (recentSearches.value.length > MAX_RECENT_SEARCHES) {
+      recentSearches.value.pop()
+    }
+    saveRecentSearches()
+  }
+}
+
+const exportToCalendar = () => {
+  const calendarContent = generateICalendar(activities.value)
+  downloadICalendar(calendarContent)
+}
+
+const handleSearchInput = () => {
+  showSearchResults.value = true
+}
+
+const selectRecentSearch = search => {
+  destination.value = search
+  showSearchResults.value = false
 }
 </script>
 
@@ -556,16 +707,22 @@ const selectDestination = dest => {
 }
 
 .date-range-display {
-  padding: 0.5rem 1rem;
-  border: 1px solid #e5e7eb;
+  padding: 0;
+  border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   background-color: white;
   cursor: pointer;
   transition: all 0.2s;
+  color: #1f2937;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  width: fit-content;
 }
 
 .date-range-display:hover {
   border-color: #9ca3af;
+  background-color: #f9fafb;
 }
 
 .date-picker-popup {
@@ -587,60 +744,69 @@ const selectDestination = dest => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
+  padding: 1rem;
   border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
 }
 
 .date-picker-header button {
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
   background-color: white;
   cursor: pointer;
+  color: #1f2937;
+  font-weight: 500;
 }
 
 .date-picker-header button:hover {
   background-color: #f3f4f6;
+  border-color: #9ca3af;
 }
 
 .date-picker-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
-  padding: 0.75rem;
+  gap: 0.75rem;
+  padding: 1rem;
   border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb;
 }
 
 .cancel-btn,
 .apply-btn {
-  padding: 0.5rem 1rem;
+  padding: 0.625rem 1.25rem;
   border-radius: 0.375rem;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.875rem;
   transition: all 0.2s;
 }
 
 .cancel-btn {
   background-color: white;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #d1d5db;
   color: #4b5563;
 }
 
 .cancel-btn:hover {
   background-color: #f3f4f6;
+  border-color: #9ca3af;
 }
 
 .apply-btn {
-  background-color: #3b82f6;
-  border: 1px solid #3b82f6;
+  background-color: #2563eb;
+  border: 1px solid #2563eb;
   color: white;
 }
 
 .apply-btn:hover {
-  background-color: #2563eb;
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
 }
 
 .calendar-grid-picker {
-  padding: 0.75rem;
+  padding: 1rem;
+  background-color: white;
 }
 
 .weekday-headers {
@@ -652,9 +818,10 @@ const selectDestination = dest => {
 
 .weekday-header {
   text-align: center;
-  font-size: 0.75rem;
-  color: #6b7280;
-  font-weight: 500;
+  font-size: 0.875rem;
+  color: #4b5563;
+  font-weight: 600;
+  padding: 0.5rem 0;
 }
 
 .calendar-days {
@@ -667,11 +834,12 @@ const selectDestination = dest => {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 2rem;
+  height: 2.5rem;
   border-radius: 0.375rem;
   cursor: pointer;
   font-size: 0.875rem;
   transition: all 0.2s;
+  color: #1f2937;
 }
 
 .calendar-day:hover {
@@ -679,18 +847,19 @@ const selectDestination = dest => {
 }
 
 .calendar-day.outside-month {
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 .calendar-day.today {
   background-color: #e5e7eb;
-  font-weight: 500;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .calendar-day.selected-start,
 .calendar-day.selected-end {
-  background-color: #3b82f6;
-  color: white;
+  background-color: #2563eb;
+  color: #ffffff;
 }
 
 .calendar-day.in-range {
