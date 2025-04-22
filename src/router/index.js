@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ItineraryView from '../views/itineraryView/ItineraryView.vue'
 import AuthView from '../views/auth/AuthView.vue'
+import ProfileView from '../views/ProfileView.vue'
 import { useStoreAuth } from '../stores/storeAuth.js'
 import SimpleLayout from '../layout/simpleLayout.vue'
 
@@ -23,13 +24,18 @@ const router = createRouter({
       component: SimpleLayout,
       children: [{ path: '', name: 'auth', component: AuthView }],
     },
+    {
+      path: '/profile',
+      component: SimpleLayout,
+      children: [{ path: '', name: 'profile', component: ProfileView }],
+    },
   ],
 })
 
 // Enhanced navigation guards
-router.beforeEach(async (to) => {
+router.beforeEach(async to => {
   const storeAuth = useStoreAuth()
-  
+
   // Wait for auth initialization if not already done
   if (!storeAuth.isInitialized) {
     await storeAuth.init()

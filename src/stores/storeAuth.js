@@ -20,8 +20,8 @@ export const useStoreAuth = defineStore('storeAuth', {
       this.router = useRouter()
       // const storeNotes = useStoreNotes()
 
-      return new Promise((resolve) => {
-        onAuthStateChanged(auth, (user) => {
+      return new Promise(resolve => {
+        onAuthStateChanged(auth, user => {
           if (user) {
             this.user.id = user.uid
             this.user.email = user.email
@@ -54,14 +54,18 @@ export const useStoreAuth = defineStore('storeAuth', {
         })
         .catch(error => {
           console.error('Registration error:', error.message)
-          return { 
-            success: false, 
-            error: error.message 
+          return {
+            success: false,
+            error: error.message,
           }
         })
     },
     loginUser(credentials) {
-      return signInWithEmailAndPassword(auth, credentials.email, credentials.password)
+      return signInWithEmailAndPassword(
+        auth,
+        credentials.email,
+        credentials.password
+      )
         .then(userCredential => {
           const user = userCredential.user
           this.user.id = user.uid
@@ -73,7 +77,7 @@ export const useStoreAuth = defineStore('storeAuth', {
           console.error('Login error:', error.message)
           return {
             success: false,
-            error: error.message
+            error: error.message,
           }
         })
     },
